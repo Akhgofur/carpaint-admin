@@ -178,7 +178,7 @@ export const deleteBrand = async (id) => {
 
 export const getProducts = async (params) =>
   axios
-    .get("product/list", {
+    .get("product/admin/list", {
       params,
       headers: {
         token: localStorage.getItem("token"),
