@@ -344,9 +344,11 @@ export const deleteClient = async (id) => {
 
 // PARTNERS
 
-export const getPartners = async () => {
+export const getPartners = async (params) => {
   return axios
-    .get("partners")
+    .get("partners", {
+      params
+    })
     .then((res) => res.data)
     .catch((err) => err);
 };

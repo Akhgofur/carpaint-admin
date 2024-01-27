@@ -48,7 +48,7 @@ export const useClients = () => useQuery({queryFn:  getClients, queryKey: ["clie
 //  PARTNERS
 
 
-export const usePartners = () => useQuery({queryFn:  getPartners, queryKey: ["partners"]})
+export const usePartners = (params) => useQuery({queryFn:  () => getPartners(params), queryKey: ["partners", params?.limit, params?.page]})
 
 
 

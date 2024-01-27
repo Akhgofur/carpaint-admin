@@ -32,34 +32,37 @@ const PartnersTable = () => {
   const [partner, setPartner] = useState(null);
   const [view, setView] = useState(false);
 
-  const { data, isLoading, refetch } = usePartners();
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading, refetch } = usePartners({ limit, page });
 
   const handleDeleteClose = () => {
     setDelete(false);
     setPartner(null);
   };
 
-    const { mutate } = useMutation({
-      mutationFn: deletePartner,
-      onSuccess: (data) => {
-        console.log(data, "sa");
-        if (data?.status == 200) {
-          console.log("why");
-          toast.success("Hamkor o'chirildi");
-          refetch();
-          handleDeleteClose();
-        } else {
-          toast.error("Xatolik yuz berdi qaytadan urinib ko'ring");
-        }
-      },
-      onError: (err) => {
+  const { mutate } = useMutation({
+    mutationFn: deletePartner,
+    onSuccess: (data) => {
+      console.log(data, "sa");
+      if (data?.status == 200) {
+        console.log("why");
+        toast.success("Hamkor o'chirildi");
+        refetch();
+        handleDeleteClose();
+      } else {
         toast.error("Xatolik yuz berdi qaytadan urinib ko'ring");
-      },
-    });
+      }
+    },
+    onError: (err) => {
+      toast.error("Xatolik yuz berdi qaytadan urinib ko'ring");
+    },
+  });
 
-    const handleDeletePartner = () => {
-      mutate(partner?.partner_id);
-    };
+  const handleDeletePartner = () => {
+    mutate(partner?.partner_id);
+  };
 
   return (
     <div className="text-center flex flex-col gap-4 justify-between h-full pt-[20px] pb-[70px]  ">
@@ -73,8 +76,8 @@ const PartnersTable = () => {
           <EditPartnerModal
             open={edit}
             setOpen={setEdit}
-            partner={partner}
-            setPartner={setPartner}
+            currentPartner={partner}
+            setCurrentPartner={setPartner}
             refetch={refetch}
             setView={setView}
             view={view}
@@ -90,7 +93,6 @@ const PartnersTable = () => {
               <tr key={item?.partner_id} className="border-b">
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{item?.partner_name}</td>
-                <td className="px-4 py-2">{item?.partner_link}</td>
                 <td className="px-4 py-2">
                   {new Date(item?.partner_create_at)?.toLocaleDateString()}
                 </td>
@@ -130,7 +132,51 @@ const PartnersTable = () => {
           </Table>
         </div>
       </div>
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setPage((e) => e - 1);
+              }}
+              disabled={page == 1}
+            >
+              <NavigateNextIcon className="rotate-180" />
+            </Button>
+            <Typography>{page}</Typography>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setPage((e) => e + 1);
+              }}
+            >
+              <NavigateNextIcon />
+            </Button>
+          </div>
+          <div className="flex items-center gap-4">
+            <FormControl size="small">
+              <InputLabel id="demo-simple-select-label">limit</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={limit}
+                label="Age"
+                onChange={(e) => {
+                  setLimit(e.target.value);
+                  setPage(1);
+                }}
+              >
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+                <MenuItem value={30}>30</MenuItem>
+                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={70}>70</MenuItem>
+                <MenuItem value={100}>100</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        </div>
         <Button
           variant="outlined"
           onClick={() => {

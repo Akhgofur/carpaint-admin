@@ -29,6 +29,11 @@ const navData = [
     url: "/brands",
     name: "Brandlar",
   },
+  {
+    id: 10,
+    url: "/partners",
+    name: "Hamkorlar",
+  },
 ];
 
 const newsTableHeaders = [
@@ -91,10 +96,6 @@ const clientsTableHeaders = [
   {
     id: 2,
     name: "Nomi",
-  },
-  {
-    id: 5,
-    name: "Linki",
   },
   {
     id: 5,

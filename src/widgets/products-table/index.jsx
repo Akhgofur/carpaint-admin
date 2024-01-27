@@ -31,6 +31,7 @@ import DeleteModal from "@/components/delete-modal";
 import EditProductModal from "@/components/edit-product-modal";
 
 const ProductsTable = () => {
+  
   const [isDelete, setDelete] = useState(false);
   const [edit, setEdit] = useState(false);
   const [create, setCreate] = useState(false);
